@@ -134,6 +134,16 @@ def get_map(x, y):
     api_url = url + '/maps/' + x + '/' + y
     return get_request(headers, api_url)
 
+def infinite_fight_loop():
+    while True:
+        if my_player.hp < my_player.max_hp:
+            print("You are not at full health. You have " + str(my_player.hp) + "/" + str(my_player.max_hp) + " hp.")
+            while my_player.hp < my_player.max_hp:
+                my_player.rest()
+        else:
+            my_player.fight()
+
+
 
 
 
@@ -142,13 +152,6 @@ def get_map(x, y):
 
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
-while True:
-    if my_player.hp < my_player.max_hp:
-        print("You are not at full health. You have " + str(my_player.hp) + "/" + str(my_player.max_hp) + " hp.")
-        while my_player.hp < my_player.max_hp:
-            my_player.rest()
-    else:
-        my_player.fight()
 
     
 
