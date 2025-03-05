@@ -112,10 +112,30 @@ class Character:
         self.update_Character(response['data']['character'])
 
     #This function makes the character equip an item
-    def equip(self, item_id):
-        pass
+    def equip(self, item_id, slot, quantity = None):
+        api_url = f'{url}/my/{self.name}/action/equip'
+        if quantity is None:
+            data = {'code': item_id, 'slot': slot}
+        else:
+            data = {'code': item_id, 'slot': slot, 'quantity': quantity}
+        response = post_request(headers, api_url, data)
+        print(f"You equipped {response['data']['item']['name']} in slot {response['data']['slot']}")
+        self.timeout(response['data']['cooldown']['total_seconds'])
+        #print(response['data']['equip'])
+        self.update_Character(response['data']['character'])
 
     #This function crafts an item
+    def craft(self, item_id, quantity = None):
+        api_url = f'{url}/my/{self.name}/action/crafting'
+        if quantity is None:
+            data = {'code': item_id}
+        else:
+            data = {'code': item_id, 'quantity': quantity}
+        response = post_request(headers, api_url, data)
+        print(f"You crafted {response['data']['items']}")
+        self.timeout(response['data']['cooldown']['total_seconds'])
+        #print(response['data']['craft'])
+        self.update_Character(response['data']['character'])
 
     
   
@@ -175,7 +195,8 @@ def infinite_fight_loop():
 
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
-#my_player.move_Character(0, -1)
+my_player.move_Character(0, 1)
+#my_player.equip('wooden_stick', 'weapon')
 infinite_fight_loop()
 
 
