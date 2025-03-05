@@ -6,7 +6,7 @@ import json
 #This is a secret key that is used to authenticate the user
 #This key is stored in the art_secret.py file which is included in the gitignore file
 
-from art_secret import API_KEY
+from art_secret import API_KEY, CHARACTER_MAIN
 
 url = 'https://api.artifactsmmo.com'
 #data = {'key': 'value'}
@@ -20,21 +20,46 @@ def get_online_status():
     response_json = response.json()
     return response_json['data']['status'] == 'online'
 
+
+def get_request(headers, api_url):
+    response = requests.get(api_url, headers=headers)
+    if response.status_code != 200:
+        return "Error: " + response.text
+    response_json = response.json()
+    return response_json
+
 #Gets the account status of the user and checks if the user is banned
 
 def my_status():
     headers['Authorization'] = 'Bearer ' + API_KEY
     api_url = url + '/my/details'
-    response = requests.get(api_url, headers=headers)
-    if response.status_code != 200:
-        return "Error: " + response.text
-    response_json = response.json()
-    print(response)
+    response_json = get_request(headers, api_url)
     return "You are playing as " + response_json['data']['username'] + " and you are " + ("banned." if response_json['data']['banned'] else "not banned.")
 
+def get_character_status():
+    headers['Authorization'] = 'Bearer ' + API_KEY
+    api_url = url + '/characters/' + CHARACTER_MAIN
+    return get_request(headers, api_url)
+   
+
+def get_map(x, y):
+    headers
+    api_url = url + '/maps/' + x + '/' + y
+    return get_request(headers, api_url)
+
+#Moves the character to a new location
+def move_character(character, x, y):
+    pass
 
 
 print(get_online_status())
 print(my_status())
 
+character_response_data = get_character_status()['data']
+print("You are playing as character " + character_response_data['name'] + " and you are leve " + str(character_response_data['level']) + ".")
+print("Your character is at location " + str(character_response_data['x']) + ", " + str(character_response_data['y']) + ".")
+current_map = get_map(str(character_response_data['x']), str(character_response_data['y']))
+print("Your current locations name is " + current_map['data']['name'] + " and it contains " + str(current_map['data']['content']) + ".")
 
+
+print(get_map('0', '1'))
