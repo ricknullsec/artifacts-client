@@ -231,6 +231,14 @@ def infinite_fight_loop():
             my_player.fight()
 
 
+#loop for mining copper need to add checks for cooldown.
+def infinit_mine_copper_loop():
+    while True:
+        if my_player.x != 2 and my_player.y != 0:
+            my_player.move_Character(2,0)
+        my_player.gather()
+        if not my_player.check_inventory_full():
+            my_player.deposit_all()
 
 
 
@@ -238,10 +246,13 @@ def infinite_fight_loop():
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
 
+print(my_player.cooldown)
+infinit_mine_copper_loop()
+
 #my_player.move_Character(4,1)
 #my_player.deposit_all()
-print(my_player.cooldown)
-infinite_fight_loop()
+#print(my_player.cooldown)
+#infinite_fight_loop()
 #1print(my_player.check_inventory_full())
 
 #my_player.move_Character(0, 1)
