@@ -1,5 +1,6 @@
 import requests
 import json
+import time
 
 
 #Secret API key
@@ -20,6 +21,14 @@ headers['Authorization'] = 'Bearer ' + API_KEY
 class Character:
     def __init__(self, name, chracter_response_data):
         self.name = name
+        self.update_Character(chracter_response_data)
+        
+    #This function returns the string representation of the character
+    def __str__(self):
+        return "Character " + self.name + " level " + str(self.level) + " with " + str(self.hp) + " hp and " + str(self.gold) + " gold."
+    
+    #This function updates the character with the new data
+    def update_Character(self, chracter_response_data):
         self.level = chracter_response_data['level']
         self.xp = chracter_response_data['xp']
         self.max_xp = chracter_response_data['max_xp']
@@ -37,20 +46,38 @@ class Character:
         self.y = chracter_response_data['y']
 
         #todo add inventory and gear
-        print("Character " + self.name + " level " + str(self.level) +" loaded.")
+        print("Character " + self.name + " level " + str(self.level) +".")
+        print("They are at location " + str(self.x) + ", " + str(self.y) + ".")
+        print("They have " + str(self.hp) + "/" + str(self.max_hp) + " hp and " + str(self.gold) + " gold.")
+
+    def move_Character(self, x, y):
+        if self.x == x and self.y == y:
+            print("You are already at that location.")
+            return
+        api_url = url + '/my/' + self.name + '/action/move'
+        data = {'x': x, 'y': y}
+        response = post_request(headers, api_url, data)
+        if response['data']['cooldown']['total_seconds'] > 0:
+            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can move again.")
+            time.sleep(response['data']['cooldown']['total_seconds'])
+        self.update_Character(response['data']['character'])
+        
+        
 
 
+#Function to make a get request to the API
 def get_request(headers, api_url):
     response = requests.get(api_url, headers=headers)
     if response.status_code != 200:
-        return "Error: " + response.text
+        raise Exception("Error: " + response.text)
     response_json = response.json()
     return response_json
 
+#This function takes in the headers and the api_url
 def post_request(headers, api_url, data):
-    response = requests.post(api_url, headers=headers, data=json.dumps(data))
+    response = requests.post(api_url, headers=headers, json=data)
     if response.status_code != 200:
-        return "Error: " + response.text
+        raise Exception("Error: " + response.text)
     response_json = response.json()
     return response_json
 
@@ -70,25 +97,24 @@ def my_status():
 def load_character(character):
     api_url = url + '/characters/' + character
     character_class = Character(character, get_request(headers, api_url)['data'])
-    
     return character_class
    
 def get_map(x, y):
     api_url = url + '/maps/' + x + '/' + y
     return get_request(headers, api_url)
 
-#Moves the character to a new location
-def move_character(character, x, y):
-    api_url = url + '/my/' + character + '/action/move'
-    data = {'x': x, 'y': y}
-    response = post_request(headers, api_url, data)
 
 
 
 
-print(get_online_status())
+
+
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
+
+for i in range(0, 10):
+    my_player.move_Character(0, i%2)
+    
 
 
 
