@@ -176,10 +176,6 @@ class Character:
 
 
 
-    
-  
-
-
 #Function to make a get request to the API
 def get_request(headers, api_url):
     response = requests.get(api_url, headers=headers)
@@ -243,10 +239,16 @@ def infinit_mine_copper_loop():
 
 
 
+
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
 
-print(my_player.cooldown)
+
+my_player
+
+#my_player.move_Character(1,5)
+#my_player.craft('copper', 7)
+
 infinit_mine_copper_loop()
 
 #my_player.move_Character(4,1)
