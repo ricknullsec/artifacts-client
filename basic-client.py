@@ -50,6 +50,7 @@ class Character:
         print("They are at location " + str(self.x) + ", " + str(self.y) + ".")
         print("They have " + str(self.hp) + "/" + str(self.max_hp) + " hp and " + str(self.gold) + " gold.")
 
+    #This function moves the character to the new location
     def move_Character(self, x, y):
         if self.x == x and self.y == y:
             print("You are already at that location.")
@@ -58,9 +59,24 @@ class Character:
         data = {'x': x, 'y': y}
         response = post_request(headers, api_url, data)
         if response['data']['cooldown']['total_seconds'] > 0:
-            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can move again.")
+            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
             time.sleep(response['data']['cooldown']['total_seconds'])
         self.update_Character(response['data']['character'])
+
+    #This function makes the character fight
+    def fight(self):
+        api_url = url + '/my/' + self.name + '/action/fight'
+        response = post_request(headers, api_url)
+        if response['data']['cooldown']['total_seconds'] > 0:
+            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
+            time.sleep(response['data']['cooldown']['total_seconds'])
+        print(response['data']['fight'])
+        self.update_Character(response['data']['character'])
+    
+    #This function makes the character rest
+
+        
+
         
         
 
@@ -74,7 +90,7 @@ def get_request(headers, api_url):
     return response_json
 
 #This function takes in the headers and the api_url
-def post_request(headers, api_url, data):
+def post_request(headers, api_url, data = None):
     response = requests.post(api_url, headers=headers, json=data)
     if response.status_code != 200:
         raise Exception("Error: " + response.text)
@@ -112,8 +128,13 @@ def get_map(x, y):
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
 
-for i in range(0, 10):
-    my_player.move_Character(0, i%2)
+if my_player.hp < my_player.max_hp:
+    print("You are not at full health. You have " + str(my_player.hp) + "/" + str(my_player.max_hp) + " hp.")
+    while my_player.hp < my_player.max_hp:
+        my_player.rest()
+else:
+    my_player.fight()
+
     
 
 
