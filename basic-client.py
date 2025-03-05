@@ -39,6 +39,7 @@ class Character:
 
         self.hp = chracter_response_data['hp']
         self.max_hp = chracter_response_data['max_hp']
+        self.cooldown = chracter_response_data['cooldown']
 
         #Add more stats here
 
@@ -219,7 +220,7 @@ def get_map(x, y):
 
 def infinite_fight_loop():
     while True:
-        if my_player.hp < (my_player.max_hp - 60):
+        if my_player.hp < (my_player.max_hp - 90):
             print("You are not at optimal health. You have " + str(my_player.hp) + "/" + str(my_player.max_hp) + " hp.")
             while my_player.hp < my_player.max_hp:
                 my_player.rest()
@@ -239,6 +240,7 @@ my_player = load_character(CHARACTER_MAIN)
 
 #my_player.move_Character(4,1)
 #my_player.deposit_all()
+print(my_player.cooldown)
 infinite_fight_loop()
 #1print(my_player.check_inventory_full())
 
