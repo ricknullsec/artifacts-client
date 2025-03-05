@@ -47,6 +47,8 @@ class Character:
         self.y = chracter_response_data['y']
 
         #todo add inventory and gear
+        self.inventory_max_items = chracter_response_data['inventory_max_items']
+        self.inventory = chracter_response_data['inventory']
         print("Character " + self.name + " level " + str(self.level) +".")
         print("They are at location " + str(self.x) + ", " + str(self.y) + ".")
         print("They have " + str(self.hp) + "/" + str(self.max_hp) + " hp and " + str(self.gold) + " gold.")
@@ -138,6 +140,41 @@ class Character:
         self.update_Character(response['data']['character'])
 
 
+    def print_inventory(self):
+        print("You have the following items in your inventory:")
+        inventory_size = 0
+        for item in self.inventory:
+            while item['quantity'] > 0:
+                print(f"{item['code']} x {item['quantity']}")
+                inventory_size += item['quantity']
+                break
+        print(f'You have {inventory_size}/{self.inventory_max_items} items in your inventory.')
+
+    def check_inventory_full(self):
+        inventory_size = 0
+        for item in self.inventory:
+            while item['quantity'] > 0:
+                inventory_size += item['quantity']
+                break
+        return inventory_size < (self.inventory_max_items - 1)
+    
+    #This function deposits items into the bank
+    def deposit_item(self, item_id, quantity = 1):
+        api_url = f'{url}/my/{self.name}/action/bank/deposit'
+        data = {'code': item_id, 'quantity': quantity}
+        response = post_request(headers, api_url, data)
+        self.timeout(response['data']['cooldown']['total_seconds'])
+        self.update_Character(response['data']['character'])
+
+    def deposit_all(self):
+        self.move_Character(4,1)
+        for item in self.inventory:
+            if item['quantity'] > 0 and item['code'] != '':
+                self.deposit_item(item['code'], item['quantity'])
+                
+
+
+
     
   
 
@@ -186,7 +223,10 @@ def infinite_fight_loop():
             print("You are not at optimal health. You have " + str(my_player.hp) + "/" + str(my_player.max_hp) + " hp.")
             while my_player.hp < my_player.max_hp:
                 my_player.rest()
+        elif not my_player.check_inventory_full():
+            my_player.deposit_all()
         else:
+            my_player.move_Character(0,1)
             my_player.fight()
 
 
@@ -197,7 +237,10 @@ def infinite_fight_loop():
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
 
+#my_player.move_Character(4,1)
+#my_player.deposit_all()
 infinite_fight_loop()
+#1print(my_player.check_inventory_full())
 
 #my_player.move_Character(0, 1)
 #my_player.equip('wooden_staff', 'weapon')
