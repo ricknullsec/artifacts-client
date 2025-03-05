@@ -27,6 +27,7 @@ class Character:
     def __str__(self):
         return "Character " + self.name + " level " + str(self.level) + " with " + str(self.hp) + " hp and " + str(self.gold) + " gold."
     
+
     #This function updates the character with the new data
     def update_Character(self, chracter_response_data):
         self.level = chracter_response_data['level']
@@ -50,6 +51,7 @@ class Character:
         print("They are at location " + str(self.x) + ", " + str(self.y) + ".")
         print("They have " + str(self.hp) + "/" + str(self.max_hp) + " hp and " + str(self.gold) + " gold.")
 
+
     #This function moves the character to the new location
     def move_Character(self, x, y):
         if self.x == x and self.y == y:
@@ -70,10 +72,6 @@ class Character:
         response = post_request(headers, api_url)
         for log in response['data']['fight']['logs']:
             print(log)
-        if response['data']['fight']['victory']:
-            print("You won the fight.")
-        else:
-            print("You lost the fight.")
         if response['data']['cooldown']['total_seconds'] > 0:
             print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
             time.sleep(response['data']['cooldown']['total_seconds'])
@@ -144,13 +142,13 @@ def get_map(x, y):
 
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
-
-if my_player.hp < my_player.max_hp:
-    print("You are not at full health. You have " + str(my_player.hp) + "/" + str(my_player.max_hp) + " hp.")
-    while my_player.hp < my_player.max_hp:
-        my_player.rest()
-else:
-    my_player.fight()
+while True:
+    if my_player.hp < my_player.max_hp:
+        print("You are not at full health. You have " + str(my_player.hp) + "/" + str(my_player.max_hp) + " hp.")
+        while my_player.hp < my_player.max_hp:
+            my_player.rest()
+    else:
+        my_player.fight()
 
     
 
