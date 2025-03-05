@@ -111,6 +111,10 @@ class Character:
         #print(response['data']['unequip'])
         self.update_Character(response['data']['character'])
 
+    #This function makes the character equip an item
+    def equip(self, item_id):
+        pass
+
     #This function crafts an item
 
     
@@ -171,6 +175,7 @@ def infinite_fight_loop():
 
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
+#my_player.move_Character(0, -1)
 infinite_fight_loop()
 
 
