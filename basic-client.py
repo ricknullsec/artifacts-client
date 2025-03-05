@@ -132,10 +132,11 @@ class Character:
         else:
             data = {'code': item_id, 'quantity': quantity}
         response = post_request(headers, api_url, data)
-        print(f"You crafted {response['data']['items']}")
+        print(f"You crafted {response['data']['details']['items']}")
         self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['craft'])
         self.update_Character(response['data']['character'])
+
 
     
   
@@ -181,8 +182,8 @@ def get_map(x, y):
 
 def infinite_fight_loop():
     while True:
-        if my_player.hp < my_player.max_hp:
-            print("You are not at full health. You have " + str(my_player.hp) + "/" + str(my_player.max_hp) + " hp.")
+        if my_player.hp < (my_player.max_hp - 60):
+            print("You are not at optimal health. You have " + str(my_player.hp) + "/" + str(my_player.max_hp) + " hp.")
             while my_player.hp < my_player.max_hp:
                 my_player.rest()
         else:
@@ -195,23 +196,17 @@ def infinite_fight_loop():
 
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
-my_player.move_Character(0, 1)
-#my_player.equip('wooden_stick', 'weapon')
+
 infinite_fight_loop()
 
+#my_player.move_Character(0, 1)
+#my_player.equip('wooden_staff', 'weapon')
+#infinite_fight_loop()
+#my_player.move_Character(2, 1)
+#my_player.unequip('weapon')
+#my_player.craft('wooden_staff')
 
 
 
-    
 
 
-
-#character_response_data = get_character_status()['data']
-#print("You are playing as character " + character_response_data['name'] + " and you are leve " + str(character_response_data['level']) + ".")
-#print("Your character is at location " + str(character_response_data['x']) + ", " + str(character_response_data['y']) + ".")
-#current_map = get_map(str(character_response_data['x']), str(character_response_data['y']))
-#print("Your current locations name is " + current_map['data']['name'] + " and it contains " + str(current_map['data']['content']) + ".")
-
-
-#print(get_map('0', '1'))
-#print(move_character(CHARACTER_MAIN, 0, 0))
