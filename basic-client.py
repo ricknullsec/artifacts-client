@@ -152,6 +152,7 @@ def infinite_fight_loop():
 
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
+infinite_fight_loop()
 
     
 
