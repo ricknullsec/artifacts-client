@@ -63,17 +63,34 @@ class Character:
             time.sleep(response['data']['cooldown']['total_seconds'])
         self.update_Character(response['data']['character'])
 
+
     #This function makes the character fight
     def fight(self):
         api_url = url + '/my/' + self.name + '/action/fight'
         response = post_request(headers, api_url)
+        for log in response['data']['fight']['logs']:
+            print(log)
+        if response['data']['fight']['victory']:
+            print("You won the fight.")
+        else:
+            print("You lost the fight.")
         if response['data']['cooldown']['total_seconds'] > 0:
             print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
             time.sleep(response['data']['cooldown']['total_seconds'])
-        print(response['data']['fight'])
+        #print(response['data']['fight'])
         self.update_Character(response['data']['character'])
     
+
     #This function makes the character rest
+    def rest(self):
+        api_url = url + '/my/' + self.name + '/action/rest'
+        response = post_request(headers, api_url)
+        print("You are resting.")
+        if response['data']['cooldown']['total_seconds'] > 0:
+            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
+            time.sleep(response['data']['cooldown']['total_seconds'])
+        #print(response['data']['rest'])
+        self.update_Character(response['data']['character'])
 
         
 
