@@ -51,6 +51,10 @@ class Character:
         print("They are at location " + str(self.x) + ", " + str(self.y) + ".")
         print("They have " + str(self.hp) + "/" + str(self.max_hp) + " hp and " + str(self.gold) + " gold.")
 
+    def timeout(self, cooldown):
+        if cooldown > 0:
+            print("You have to wait " + str(cooldown) + " seconds before you can take another action.")
+            time.sleep(cooldown)
 
     #This function moves the character to the new location
     def move_Character(self, x, y):
@@ -60,9 +64,7 @@ class Character:
         api_url = url + '/my/' + self.name + '/action/move'
         data = {'x': x, 'y': y}
         response = post_request(headers, api_url, data)
-        if response['data']['cooldown']['total_seconds'] > 0:
-            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
-            time.sleep(response['data']['cooldown']['total_seconds'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
         self.update_Character(response['data']['character'])
 
 
@@ -72,9 +74,7 @@ class Character:
         response = post_request(headers, api_url)
         for log in response['data']['fight']['logs']:
             print(log)
-        if response['data']['cooldown']['total_seconds'] > 0:
-            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
-            time.sleep(response['data']['cooldown']['total_seconds'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['fight'])
         self.update_Character(response['data']['character'])
     
@@ -84,9 +84,7 @@ class Character:
         api_url = url + '/my/' + self.name + '/action/rest'
         response = post_request(headers, api_url)
         print("You are resting.")
-        if response['data']['cooldown']['total_seconds'] > 0:
-            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
-            time.sleep(response['data']['cooldown']['total_seconds'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['rest'])
         self.update_Character(response['data']['character'])
 
@@ -95,9 +93,7 @@ class Character:
         api_url = f'{url}/my/{self.name}/action/gathering'
         response = post_request(headers, api_url)
         print(f"You gathered :{response['data']['details']['items']}")
-        if response['data']['cooldown']['total_seconds'] > 0:
-            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
-            time.sleep(response['data']['cooldown']['total_seconds'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['gather'])
         self.update_Character(response['data']['character'])
     
@@ -111,20 +107,14 @@ class Character:
             data = {'slot': slot, 'quantity': quantity}
         response = post_request(headers, api_url, data)
         print(f"You unequipped {response['data']['item']['name']}")
-        if response['data']['cooldown']['total_seconds'] > 0:
-            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
-            time.sleep(response['data']['cooldown']['total_seconds'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['unequip'])
         self.update_Character(response['data']['character'])
 
     #This function crafts an item
 
     
-
-        
-
-        
-        
+  
 
 
 #Function to make a get request to the API
@@ -181,9 +171,9 @@ def infinite_fight_loop():
 
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
-#infinite_fight_loop()
+infinite_fight_loop()
 
-my_player.unequip('weapon')
+
 
 
     
