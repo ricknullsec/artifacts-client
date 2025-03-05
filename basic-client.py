@@ -90,6 +90,18 @@ class Character:
         #print(response['data']['rest'])
         self.update_Character(response['data']['character'])
 
+    #This function makes the character gather
+    def gather(self):
+        api_url = f'{url}/my/{self.name}/action/gathering'
+        response = post_request(headers, api_url)
+        print(f"You gathered :{response['data']['details']['items']}")
+        if response['data']['cooldown']['total_seconds'] > 0:
+            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
+            time.sleep(response['data']['cooldown']['total_seconds'])
+        #print(response['data']['gather'])
+        self.update_Character(response['data']['character'])
+    
+
         
 
         
@@ -148,11 +160,12 @@ def infinite_fight_loop():
 
 
 
-
-
 print(my_status())
 my_player = load_character(CHARACTER_MAIN)
-infinite_fight_loop()
+#infinite_fight_loop()
+
+my_player.move_Character(2, 1)
+
 
     
 
