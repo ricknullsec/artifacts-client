@@ -102,6 +102,25 @@ class Character:
         self.update_Character(response['data']['character'])
     
 
+    #this function makes the character unequip an item
+    def unequip(self, slot, quantity = None):
+        api_url = f'{url}/my/{self.name}/action/unequip'
+        if quantity is None:
+            data = {'slot': slot}
+        else:
+            data = {'slot': slot, 'quantity': quantity}
+        response = post_request(headers, api_url, data)
+        print(f"You unequipped {response['data']['item']['name']}")
+        if response['data']['cooldown']['total_seconds'] > 0:
+            print("You have to wait " + str(response['data']['cooldown']['total_seconds']) + " seconds before you can take another action.")
+            time.sleep(response['data']['cooldown']['total_seconds'])
+        #print(response['data']['unequip'])
+        self.update_Character(response['data']['character'])
+
+    #This function crafts an item
+
+    
+
         
 
         
@@ -164,7 +183,7 @@ print(my_status())
 my_player = load_character(CHARACTER_MAIN)
 #infinite_fight_loop()
 
-my_player.move_Character(2, 1)
+my_player.unequip('weapon')
 
 
     
