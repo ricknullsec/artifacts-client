@@ -11,15 +11,10 @@ from art_secret import API_KEY, CHARACTER_MAIN
 url = 'https://api.artifactsmmo.com'
 #data = {'key': 'value'}
 headers = {'Content-Type': 'application/json'}
+headers['Authorization'] = 'Bearer ' + API_KEY
 
-#Function to get the online status of the server
-#Returns True if the server is online, False otherwise
-
-def get_online_status():
-    response = requests.get(url, headers=headers)
-    response_json = response.json()
-    return response_json['data']['status'] == 'online'
-
+#Function to make a get request to the API
+#This function takes in the headers and the api_url
 
 def get_request(headers, api_url):
     response = requests.get(api_url, headers=headers)
@@ -28,22 +23,24 @@ def get_request(headers, api_url):
     response_json = response.json()
     return response_json
 
+#Gets the online status of the game
+
+def get_online_status():
+    return get_request(headers, url)['data']['status'] == 'online'
+
+
 #Gets the account status of the user and checks if the user is banned
 
 def my_status():
-    headers['Authorization'] = 'Bearer ' + API_KEY
     api_url = url + '/my/details'
     response_json = get_request(headers, api_url)
     return "You are playing as " + response_json['data']['username'] + " and you are " + ("banned." if response_json['data']['banned'] else "not banned.")
 
 def get_character_status():
-    headers['Authorization'] = 'Bearer ' + API_KEY
     api_url = url + '/characters/' + CHARACTER_MAIN
     return get_request(headers, api_url)
    
-
 def get_map(x, y):
-    headers
     api_url = url + '/maps/' + x + '/' + y
     return get_request(headers, api_url)
 
