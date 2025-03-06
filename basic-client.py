@@ -214,16 +214,17 @@ def get_map(x, y):
     api_url = url + '/maps/' + x + '/' + y
     return get_request(headers, api_url)
 
-def infinite_fight_loop():
+def infinite_fight_loop(x,y):
+    my_player.move_Character(x,y)
     while True:
-        if my_player.hp < (my_player.max_hp - 90):
+        if my_player.hp < (my_player.max_hp / 2):
             print("You are not at optimal health. You have " + str(my_player.hp) + "/" + str(my_player.max_hp) + " hp.")
             while my_player.hp < my_player.max_hp:
                 my_player.rest()
         elif not my_player.check_inventory_full():
             my_player.deposit_all()
         else:
-            my_player.move_Character(0,1)
+            my_player.move_Character(x,y)
             my_player.fight()
 
 
@@ -244,17 +245,17 @@ print(my_status())
 my_player = load_character(CHARACTER_MAIN)
 
 
-my_player
+#my_player
 
 #my_player.move_Character(1,5)
 #my_player.craft('copper', 7)
 
-infinit_mine_copper_loop()
+#infinit_mine_copper_loop()
 
 #my_player.move_Character(4,1)
 #my_player.deposit_all()
 #print(my_player.cooldown)
-#infinite_fight_loop()
+infinite_fight_loop(1,-2)
 #1print(my_player.check_inventory_full())
 
 #my_player.move_Character(0, 1)
