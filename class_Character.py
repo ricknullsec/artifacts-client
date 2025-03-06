@@ -176,6 +176,15 @@ class Character:
         self.update_Character(response['data']['character'])
 
 
+    #This function withdraws items from the bank
+    def withdraw_item(self, item_id, quantity = 1):
+        api_url = f'{url}/my/{self.name}/action/bank/withdraw'
+        data = {'code': item_id, 'quantity': quantity}
+        response = post_request(headers, api_url, data)
+        self.timeout(response['data']['cooldown']['total_seconds'])
+        self.update_Character(response['data']['character'])
+
+
     def deposit_all(self):
         self.move_Character(4,1)
         for item in self.inventory:
