@@ -32,7 +32,7 @@ def my_status():
 
 
 def get_map(x, y):
-    api_url = url + '/maps/' + x + '/' + y
+    api_url = f'{url}/maps/{str(x)}/{str(y)}'
     return get_request(headers, api_url)
 
 
@@ -64,11 +64,19 @@ def infinit_mine_copper_loop():
 
 
 print(my_status())
-my_player = load_character(CHARACTER_MAIN)
+my_player = load_character(CHARACTER_MAIN[1])
 
 
 
-infinite_fight_loop(1,-2)
+#print(get_map(4,1))
+
+while my_player.check_bank_item('copper_ore')['quantity'] > 0:
+    my_player.move_Character(4,1)
+    my_player.deposit_all()
+    
+
+
+#infinite_fight_loop(1,-2)
 
 
 
