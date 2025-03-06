@@ -14,13 +14,16 @@ def load_character(character):
     character_class = Character(character, get_request(headers, api_url)['data'])
     return character_class
    
+   
 #This class represents a character in the game
+
 
 class Character:
     def __init__(self, name, chracter_response_data):
         self.name = name
         self.update_Character(chracter_response_data)
-        
+
+
     #This function returns the string representation of the character
     def __str__(self):
         return "Character " + self.name + " level " + str(self.level) + " with " + str(self.hp) + " hp and " + str(self.gold) + " gold."
@@ -52,10 +55,12 @@ class Character:
         print("They are at location " + str(self.x) + ", " + str(self.y) + ".")
         print("They have " + str(self.hp) + "/" + str(self.max_hp) + " hp and " + str(self.gold) + " gold.")
 
+
     def timeout(self, cooldown):
         if cooldown > 0:
             print("You have to wait " + str(cooldown) + " seconds before you can take another action.")
             time.sleep(cooldown)
+
 
     #This function moves the character to the new location
     def move_Character(self, x, y):
@@ -89,6 +94,7 @@ class Character:
         #print(response['data']['rest'])
         self.update_Character(response['data']['character'])
 
+
     #This function makes the character gather
     def gather(self):
         api_url = f'{url}/my/{self.name}/action/gathering'
@@ -112,6 +118,7 @@ class Character:
         #print(response['data']['unequip'])
         self.update_Character(response['data']['character'])
 
+
     #This function makes the character equip an item
     def equip(self, item_id, slot, quantity = None):
         api_url = f'{url}/my/{self.name}/action/equip'
@@ -124,6 +131,7 @@ class Character:
         self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['equip'])
         self.update_Character(response['data']['character'])
+
 
     #This function crafts an item
     def craft(self, item_id, quantity = None):
@@ -149,6 +157,7 @@ class Character:
                 break
         print(f'You have {inventory_size}/{self.inventory_max_items} items in your inventory.')
 
+
     def check_inventory_full(self):
         inventory_size = 0
         for item in self.inventory:
@@ -157,6 +166,7 @@ class Character:
                 break
         return inventory_size < (self.inventory_max_items - 1)
     
+
     #This function deposits items into the bank
     def deposit_item(self, item_id, quantity = 1):
         api_url = f'{url}/my/{self.name}/action/bank/deposit'
@@ -164,6 +174,7 @@ class Character:
         response = post_request(headers, api_url, data)
         self.timeout(response['data']['cooldown']['total_seconds'])
         self.update_Character(response['data']['character'])
+
 
     def deposit_all(self):
         self.move_Character(4,1)
