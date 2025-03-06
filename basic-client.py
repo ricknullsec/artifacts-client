@@ -80,8 +80,8 @@ my_player = load_character(CHARACTER_MAIN[1])
 
 #print(get_map(4,1))
 
-smelt_copper()
-
+#smelt_copper()
+infinit_mine_copper_loop()
 
 
 
