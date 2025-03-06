@@ -195,11 +195,10 @@ class Character:
     def get_my_bank_items(self):
         api_url = f'{url}/my/bank/items'
         response = get_request(headers, api_url)
-        print("You have the following items in your bank:")
         return response['data']
     
 
-    
+
     def check_bank_item(self, item_id):
         bank_items = self.get_my_bank_items()
         for item in bank_items:

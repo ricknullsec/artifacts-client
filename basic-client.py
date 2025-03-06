@@ -70,10 +70,19 @@ my_player = load_character(CHARACTER_MAIN[1])
 
 #print(get_map(4,1))
 
+
+print(my_player.inventory[0]['quantity'])
+
 while my_player.check_bank_item('copper_ore')['quantity'] > 0:
     my_player.move_Character(4,1)
     my_player.deposit_all()
-    
+    if my_player.check_bank_item('copper_ore')['quantity'] < my_player.inventory_max_items:
+        my_player.withdraw_item('copper_ore', my_player.check_bank_item('copper_ore')['quantity'])
+    else: 
+        my_player.withdraw_item('copper_ore', my_player.inventory_max_items)
+    my_player.move_Character(1,5)
+    my_player.craft('copper', my_player.inventory[0]['quantity']/10)
+
 
 
 #infinite_fight_loop(1,-2)
