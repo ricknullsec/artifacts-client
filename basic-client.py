@@ -74,7 +74,7 @@ def smelt_copper():
 
 
 print(my_status())
-my_player = load_character(CHARACTER_MAIN[1])
+my_player = load_character(CHARACTER_MAIN[2])
 
 
 
