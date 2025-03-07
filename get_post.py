@@ -3,7 +3,9 @@ import requests
 #Function to make a get request to the API
 def get_request(headers, api_url):
     response = requests.get(api_url, headers=headers)
-    if response.status_code != 200:
+    if response.status_code == 499:
+        raise Exception("Error: Unauthorized")
+    elif response.status_code != 200:
         raise Exception("Error: " + response.text)
     response_json = response.json()
     return response_json

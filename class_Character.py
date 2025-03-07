@@ -59,7 +59,7 @@ class Character:
     def timeout(self, cooldown):
         if cooldown > 0:
             print("You have to wait " + str(cooldown) + " seconds before you can take another action.")
-            time.sleep(cooldown + 0.25)
+            time.sleep(cooldown + 2)
 
 
     #This function moves the character to the new location
