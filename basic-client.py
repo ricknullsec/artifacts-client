@@ -59,6 +59,14 @@ def infinit_mine_copper_loop():
         if not my_player.check_inventory_full():
             my_player.deposit_all()
 
+def infinit_mine_iron_loop():
+    while True:
+        if my_player.x != 1 and my_player.y != 7:
+            my_player.move_Character(1,7)
+        my_player.gather()
+        if not my_player.check_inventory_full():
+            my_player.deposit_all()
+
 
 
 def smelt_copper():
@@ -74,8 +82,9 @@ def smelt_copper():
 
 
 print(my_status())
-my_player = load_character(CHARACTER_MAIN[0])
+my_player = load_character(CHARACTER_MAIN[2])
 
+infinit_mine_iron_loop()
 
 
 #print(get_map(4,1))
@@ -86,7 +95,7 @@ my_player = load_character(CHARACTER_MAIN[0])
 #my_player.move_Character(2,1)
 #my_player.craft('sticky_sword', 12)
 
-infinite_fight_loop(1,-2)
+#infinite_fight_loop(1,-2)
 
 
 
