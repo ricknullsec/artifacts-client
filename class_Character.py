@@ -89,7 +89,7 @@ class Character:
             print(log)
         #print(response['data']['fight'])
         self.update_Character(response['data']['character'])
-        self.timeout(response['data']['cooldown'])
+        self.wait_for_cooldown()
     
 
     #This function makes the character rest
@@ -99,7 +99,7 @@ class Character:
         print("You are resting.")
         #print(response['data']['rest'])
         self.update_Character(response['data']['character'])
-        self.timeout(response['data']['cooldown'])
+        self.wait_for_cooldown()
 
 
     #This function makes the character gather
@@ -109,7 +109,7 @@ class Character:
         print(f"You gathered :{response['data']['details']['items']}")
         #print(response['data']['gather'])
         self.update_Character(response['data']['character'])
-        self.timeout(response['data']['cooldown'])
+        self.wait_for_cooldown()
     
 
     #this function makes the character unequip an item
@@ -123,7 +123,7 @@ class Character:
         print(f"You unequipped {response['data']['item']['name']}")
         #print(response['data']['unequip'])
         self.update_Character(response['data']['character'])
-        self.timeout(response['data']['cooldown'])
+        self.wait_for_cooldown()
 
 
     #This function makes the character equip an item
@@ -137,7 +137,7 @@ class Character:
         print(f"You equipped {response['data']['item']['name']} in slot {response['data']['slot']}")
         #print(response['data']['equip'])
         self.update_Character(response['data']['character'])
-        self.timeout(response['data']['cooldown'])
+        self.wait_for_cooldown()
 
 
     #This function crafts an item
@@ -151,7 +151,7 @@ class Character:
         print(f"You crafted {response['data']['details']['items']}")
         #print(response['data']['craft'])
         self.update_Character(response['data']['character'])
-        self.timeout(response['data']['cooldown'])
+        self.wait_for_cooldown()
 
 
     def print_inventory(self):
@@ -180,7 +180,7 @@ class Character:
         data = {'code': item_id, 'quantity': quantity}
         response = post_request(headers, api_url, data)
         self.update_Character(response['data']['character'])
-        self.timeout(response['data']['cooldown'])
+        self.wait_for_cooldown()
 
 
     #This function withdraws items from the bank
@@ -189,7 +189,7 @@ class Character:
         data = {'code': item_id, 'quantity': quantity}
         response = post_request(headers, api_url, data)
         self.update_Character(response['data']['character'])
-        self.timeout(response['data']['cooldown'])
+        self.wait_for_cooldown()
 
 
     def deposit_all(self):
