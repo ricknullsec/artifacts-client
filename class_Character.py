@@ -60,7 +60,7 @@ class Character:
     def timeout(self, cooldown):
         expiration_time = datetime.strptime(cooldown['expiration'], '%Y-%m-%dT%H:%M:%S.%fZ')
         created_time = datetime.strptime(cooldown['started_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        wait_time = (expiration_time - created_time).total_seconds() +2.0
+        wait_time = (expiration_time - created_time).total_seconds() + 3.0
         if wait_time > 0:
             print("You have to wait " + str(wait_time) + " seconds before you can take another action.")
             time.sleep(wait_time)
