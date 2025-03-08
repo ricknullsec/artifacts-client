@@ -1,5 +1,6 @@
 import json
-import time
+from datetime import datetime, timezone
+
 
 from get_post import get_request, post_request
 from class_Character import load_character
@@ -76,19 +77,32 @@ def smelt_copper():
 print(my_status())
 my_player = load_character(CHARACTER_MAIN[2])
 
-#infinit_mine_iron_loop()
 
+infinit_gather_loop(1,7)
+
+## Testing time fucky
+
+current_time = datetime.now(timezone.utc)
+server_time = datetime.strptime(get_request(headers, url)['data']['server_time'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=timezone.utc)
+if current_time > server_time:
+    print("The server time is behind the current time.")
+else:
+    print("The server time is ahead of the current time.")
+print(current_time)
+print(server_time)
+time_difference = server_time - current_time
+print(time_difference.total_seconds())
 
 #print(get_map(4,1))
 
-infinit_gather_loop(1,7)
+#infinit_gather_loop(1,7)
 #smelt_copper()
-#infinit_mine_copper_loop()
+
 
 #my_player.move_Character(2,1)
 #my_player.craft('sticky_sword', 12)
 
-infinite_fight_loop(3,-2)
+#infinite_fight_loop(3,-2)
 
 
 

@@ -1,7 +1,7 @@
 from get_post import post_request, get_request
 import time
 from art_secret import API_KEY
-from datetime import datetime
+from datetime import datetime, timezone
 url = 'https://api.artifactsmmo.com'
 headers = {'Content-Type': 'application/json'}
 headers['Authorization'] = 'Bearer ' + API_KEY
@@ -36,6 +36,7 @@ class Character:
         self.xp = chracter_response_data['xp']
         self.max_xp = chracter_response_data['max_xp']
         self.gold = chracter_response_data['gold']
+        self.cooldown_exp = chracter_response_data['cooldown_expiration']
         
         #todo add skill levels
 
@@ -57,10 +58,12 @@ class Character:
         print("They have " + str(self.hp) + "/" + str(self.max_hp) + " hp and " + str(self.gold) + " gold.")
 
 
-    def timeout(self, cooldown):
-        expiration_time = datetime.strptime(cooldown['expiration'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        created_time = datetime.strptime(cooldown['started_at'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        wait_time = (expiration_time - created_time).total_seconds() + 3.0
+    def wait_for_cooldown(self):
+        expiration_time = datetime.strptime(self.cooldown_exp, '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=timezone.utc)
+        current_time = datetime.now(timezone.utc)
+        wait_time = (expiration_time - current_time).total_seconds()
+        print(expiration_time)
+        print(current_time)
         if wait_time > 0:
             print("You have to wait " + str(wait_time) + " seconds before you can take another action.")
             time.sleep(wait_time)
@@ -75,7 +78,7 @@ class Character:
         data = {'x': x, 'y': y}
         response = post_request(headers, api_url, data)
         self.update_Character(response['data']['character'])
-        self.timeout(response['data']['cooldown'])
+        self.wait_for_cooldown()
 
 
     #This function makes the character fight
