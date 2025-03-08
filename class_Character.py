@@ -62,11 +62,15 @@ class Character:
         expiration_time = datetime.strptime(self.cooldown_exp, '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=timezone.utc)
         current_time = datetime.now(timezone.utc)
         wait_time = (expiration_time - current_time).total_seconds()
-        print(expiration_time)
-        print(current_time)
+        print(f"Expiration time: {expiration_time}")
+        print(f"Current time: {current_time}")
+        start = time.monotonic()  # Track time more accurately
         if wait_time > 0:
             print("You have to wait " + str(wait_time) + " seconds before you can take another action.")
             time.sleep(wait_time)
+            end = time.monotonic()
+            actual_sleep = end - start
+            print(f"Slept for: {actual_sleep:.2f} seconds")
 
 
     #This function moves the character to the new location
