@@ -54,11 +54,12 @@ def infinite_fight_loop(x,y):
 
 def infinit_gather_loop(x,y):
     while True:
+        if not my_player.check_inventory_full():
+            my_player.deposit_all()
         if my_player.x != x and my_player.y != y:
             my_player.move_Character(x,y)
         my_player.gather()
-        if not my_player.check_inventory_full():
-            my_player.deposit_all()
+        
 
 
 

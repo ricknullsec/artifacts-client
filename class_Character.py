@@ -72,6 +72,15 @@ class Character:
             actual_sleep = end - start
             print(f"Slept for: {actual_sleep:.2f} seconds")
 
+    def timeout(self, cooldown):
+        if cooldown > 0:
+            print("You have to wait " + str(cooldown) + " seconds before you can take another action.")
+            start = time.monotonic()  # Track time more accurately
+            time.sleep(cooldown)
+            end = time.monotonic()
+            actual_sleep = end - start
+            print(f"Slept for: {actual_sleep:.2f} seconds")
+
 
     #This function moves the character to the new location
     def move_Character(self, x, y):
@@ -93,7 +102,7 @@ class Character:
             print(log)
         #print(response['data']['fight'])
         self.update_Character(response['data']['character'])
-        self.wait_for_cooldown()
+        self.timeout(response['data']['cooldown']['remaining_seconds'])
     
 
     #This function makes the character rest
@@ -113,7 +122,9 @@ class Character:
         print(f"You gathered :{response['data']['details']['items']}")
         #print(response['data']['gather'])
         self.update_Character(response['data']['character'])
-        self.wait_for_cooldown()
+        print(response['data']['cooldown']['remaining_seconds'])
+        print(response['data']['cooldown']['total_seconds'])
+        self.timeout(response['data']['cooldown']['remaining_seconds'])
     
 
     #this function makes the character unequip an item
