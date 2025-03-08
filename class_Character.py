@@ -59,7 +59,7 @@ class Character:
     def timeout(self, cooldown):
         if cooldown > 0:
             print("You have to wait " + str(cooldown) + " seconds before you can take another action.")
-            time.sleep(cooldown + 2)
+            time.sleep(cooldown + 1.0)
 
 
     #This function moves the character to the new location
@@ -70,8 +70,8 @@ class Character:
         api_url = url + '/my/' + self.name + '/action/move'
         data = {'x': x, 'y': y}
         response = post_request(headers, api_url, data)
-        self.timeout(response['data']['cooldown']['total_seconds'])
         self.update_Character(response['data']['character'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
 
 
     #This function makes the character fight
@@ -80,9 +80,9 @@ class Character:
         response = post_request(headers, api_url)
         for log in response['data']['fight']['logs']:
             print(log)
-        self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['fight'])
         self.update_Character(response['data']['character'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
     
 
     #This function makes the character rest
@@ -90,9 +90,9 @@ class Character:
         api_url = url + '/my/' + self.name + '/action/rest'
         response = post_request(headers, api_url)
         print("You are resting.")
-        self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['rest'])
         self.update_Character(response['data']['character'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
 
 
     #This function makes the character gather
@@ -100,9 +100,9 @@ class Character:
         api_url = f'{url}/my/{self.name}/action/gathering'
         response = post_request(headers, api_url)
         print(f"You gathered :{response['data']['details']['items']}")
-        self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['gather'])
         self.update_Character(response['data']['character'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
     
 
     #this function makes the character unequip an item
@@ -114,9 +114,9 @@ class Character:
             data = {'slot': slot, 'quantity': quantity}
         response = post_request(headers, api_url, data)
         print(f"You unequipped {response['data']['item']['name']}")
-        self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['unequip'])
         self.update_Character(response['data']['character'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
 
 
     #This function makes the character equip an item
@@ -128,9 +128,9 @@ class Character:
             data = {'code': item_id, 'slot': slot, 'quantity': quantity}
         response = post_request(headers, api_url, data)
         print(f"You equipped {response['data']['item']['name']} in slot {response['data']['slot']}")
-        self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['equip'])
         self.update_Character(response['data']['character'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
 
 
     #This function crafts an item
@@ -142,9 +142,9 @@ class Character:
             data = {'code': item_id, 'quantity': quantity}
         response = post_request(headers, api_url, data)
         print(f"You crafted {response['data']['details']['items']}")
-        self.timeout(response['data']['cooldown']['total_seconds'])
         #print(response['data']['craft'])
         self.update_Character(response['data']['character'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
 
 
     def print_inventory(self):
@@ -172,8 +172,8 @@ class Character:
         api_url = f'{url}/my/{self.name}/action/bank/deposit'
         data = {'code': item_id, 'quantity': quantity}
         response = post_request(headers, api_url, data)
-        self.timeout(response['data']['cooldown']['total_seconds'])
         self.update_Character(response['data']['character'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
 
 
     #This function withdraws items from the bank
@@ -181,8 +181,8 @@ class Character:
         api_url = f'{url}/my/{self.name}/action/bank/withdraw'
         data = {'code': item_id, 'quantity': quantity}
         response = post_request(headers, api_url, data)
-        self.timeout(response['data']['cooldown']['total_seconds'])
         self.update_Character(response['data']['character'])
+        self.timeout(response['data']['cooldown']['total_seconds'])
 
 
     def deposit_all(self):

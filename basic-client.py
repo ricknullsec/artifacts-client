@@ -74,19 +74,19 @@ def smelt_copper():
 
 
 print(my_status())
-my_player = load_character(CHARACTER_MAIN[2])
+my_player = load_character(CHARACTER_MAIN[0])
 
 
 
 #print(get_map(4,1))
 
 #smelt_copper()
-infinit_mine_copper_loop()
+#infinit_mine_copper_loop()
 
+#my_player.move_Character(2,1)
+#my_player.craft('sticky_sword', 12)
 
-
-
-#infinite_fight_loop(1,-2)
+infinite_fight_loop(1,-2)
 
 
 
