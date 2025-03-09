@@ -75,20 +75,27 @@ def smelt_copper():
         my_player.craft('copper', my_player.inventory[0]['quantity']/10)
 
 
+def refine_ashwood():
+    while my_player.check_bank_item('ash_wood')['quantity'] > 0:
+        my_player.move_Character(4,1)
+        my_player.deposit_all()
+        if my_player.check_bank_item('ash_wood')['quantity'] < my_player.inventory_max_items:
+            my_player.withdraw_item('ash_wood', my_player.check_bank_item('ash_wood')['quantity'])
+        else:
+            my_player.withdraw_item('ash_wood', my_player.inventory_max_items)
+        my_player.move_Character(1,5)
+        my_player.craft('ash_plank', my_player.inventory[0]['quantity']/10)
+
+
+
 print(my_status())
 my_player = load_character(CHARACTER_MAIN[1])
+smelt_copper()
+
+#infinit_gather_loop(-1,0)
 
 
 
-while my_player.check_bank_item('ash_wood')['quantity'] > 0:
-    my_player.move_Character(4,1)
-    my_player.deposit_all()
-    if my_player.check_bank_item('ash_wood')['quantity'] < my_player.inventory_max_items:
-        my_player.withdraw_item('ash_wood', my_player.check_bank_item('ash_wood')['quantity'])
-    else:
-        my_player.withdraw_item('ash_wood', my_player.inventory_max_items)
-    my_player.move_Character(1,5)
-    my_player.craft('ash_plank', my_player.inventory[0]['quantity']/10)
 
 
 
