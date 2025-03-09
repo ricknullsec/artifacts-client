@@ -39,6 +39,8 @@ class Character:
         self.cooldown_exp = chracter_response_data['cooldown_expiration']
         
         #todo add skill levels
+        self.gearcrafting_level = chracter_response_data['gearcrafting_level']
+
 
         self.hp = chracter_response_data['hp']
         self.max_hp = chracter_response_data['max_hp']
