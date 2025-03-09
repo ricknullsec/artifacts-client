@@ -41,7 +41,7 @@ class Character:
         #todo add skill levels
         self.gearcrafting_level = chracter_response_data['gearcrafting_level']
 
-
+        
         self.hp = chracter_response_data['hp']
         self.max_hp = chracter_response_data['max_hp']
         self.cooldown = chracter_response_data['cooldown']
