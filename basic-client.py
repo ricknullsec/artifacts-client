@@ -83,19 +83,19 @@ def refine_ashwood():
             my_player.withdraw_item('ash_wood', my_player.check_bank_item('ash_wood')['quantity'])
         else:
             my_player.withdraw_item('ash_wood', my_player.inventory_max_items)
-        my_player.move_Character(1,5)
+        my_player.move_Character(-2,-3)
         my_player.craft('ash_plank', my_player.inventory[0]['quantity']/10)
 
 
 
 print(my_status())
 my_player = load_character(CHARACTER_MAIN[1])
-smelt_copper()
+#smelt_copper()
 
-#infinit_gather_loop(-1,0)
+#infinit_gather_loop(1,6)
 
 
-
+refine_ashwood()
 
 
 
@@ -109,7 +109,7 @@ smelt_copper()
 #my_player.move_Character(2,1)
 #my_player.craft('sticky_sword', 12)
 
-#infinite_fight_loop(3,-2)
+#infinite_fight_loop(2,-1)
 
 
 
